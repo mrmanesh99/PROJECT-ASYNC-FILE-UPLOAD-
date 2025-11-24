@@ -1,4 +1,5 @@
 import { LightningElement } from 'lwc';
+import FileHandler from '@salesforce/apex/FileHandler.FileHandler';
 
 export default class UploadFile extends LightningElement {
     fileitems;
@@ -10,6 +11,30 @@ export default class UploadFile extends LightningElement {
             this.fileitems=reader.result;
             console.log("FILE ITEMS"+this.fileitems)
            this.csv= this.parseCSV(this.fileitems)
+           this.records=JSON.stringify(this.csv);
+           FileHandler({records:this.records})
+           .then(result => {
+            console.log(result);
+
+            this.dispatchEvent(
+                new ShowToastEvent({
+                    title: 'Success',
+                    message: 'Operation completed successfully!',
+                    variant: 'success'
+                })
+            );
+        })
+        .catch(error => {
+            console.log(error);
+
+            this.dispatchEvent(
+                new ShowToastEvent({
+                    title: 'Error',
+                    message: error.body ? error.body.message : 'Something went wrong',
+                    variant: 'error'
+                })
+            );
+        });
         }
         reader.readAsText(this.file);
     
