@@ -19,10 +19,10 @@ export default class UploadFile extends LightningElement {
     const headers = lines[0].trim().split(',');
 
     let records = [];
-
+                                                  
     for (let i = 1; i < lines.length; i++) {
-        if (!lines[i].trim()) continue;  // skip empty lines
-        let values = lines[i].split(',');
+        if (!lines[i].trim()) continue;            
+        let values = lines[i].split(',');             
         let obj = {};
 
         headers.forEach((header, index) => {
